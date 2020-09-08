@@ -12,4 +12,4 @@ Project is created with:
 ## File Scanner
 The File Scanner is WPF project utilizing MVVM and an on disk MySQL database and is meant to be a highly customizable deep scanner for finding large files that are rarely used to free up system resources.
 
-![File Scanner Overview Screen](./images/FileScannerOverview.png)
+![File Scanner Overview Screen](./images/FileScannerOverview.PNG)
