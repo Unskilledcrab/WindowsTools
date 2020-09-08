@@ -3,7 +3,7 @@ A Visual Studio .Net Core solution holding miscellaneous tools used for windows 
 
 ## Table of contents
 * [Technologies](#technologies)
-* [File Scanner](#file-scanner) - Find large files for deep system cleaning
+* [File Scanner](#file-scanner) - Find large files unused files *system cleaning*
 	
 ## Technologies
 Project is created with:
