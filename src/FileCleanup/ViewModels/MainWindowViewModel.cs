@@ -1,14 +1,16 @@
-﻿using FileCleanup.Async;
+﻿using FileCleanup.ProgressModels;
 using FileCleanup.Commands;
 using FileCleanup.Extensions;
 using FileCleanup.Helpers;
 using FileCleanup.Models;
+using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +23,8 @@ namespace FileCleanup.ViewModels
         #region View Properties
         public ObservableCollection<FileProps> FlaggedFiles { get; set; } = new ObservableCollection<FileProps>();
         public ObservableCollection<FileProps> FlaggedDirectories { get; set; } = new ObservableCollection<FileProps>();
+
+        public bool IsScanning { get; private set; }
 
         private string scanningStatus = "Not Started";
         public string ScanningStatus
@@ -83,20 +87,21 @@ namespace FileCleanup.ViewModels
         #endregion
 
         #region Commands
-        public StartScanCommand StartCommand { get; set; }
-        public CancelScanCommand CancelCommand { get; set; }
-        public OpenExplorerCommand OpenExplorerCommand { get; set; }
-        public AddToScanListCommand AddToScanListCommand { get; set; }
-        public AddToNoScanListCommand AddToNoScanListCommand { get; set; }
+        public RelayCommand CancelCommand { get; private set; }
+        public IAsyncCommand StartCommand { get; private set; }
+        public IAsyncCommand<Button> OpenExplorerCommand { get; set; }
+        public IAsyncCommand AddToScanListCommand { get; set; }
+        public IAsyncCommand AddToNoScanListCommand { get; set; }
         #endregion
 
         public MainWindowViewModel()
         {
-            StartCommand = new StartScanCommand(this);
-            CancelCommand = new CancelScanCommand(this);
-            OpenExplorerCommand = new OpenExplorerCommand(this);
-            AddToScanListCommand = new AddToScanListCommand(this);
-            AddToNoScanListCommand = new AddToNoScanListCommand(this);
+            CancelCommand = new RelayCommand(ExecuteCancelScanner, () => IsScanning);
+            StartCommand = new AsyncCommand(ExecuteStartScanner, () => !IsScanning);
+            OpenExplorerCommand = new AsyncCommand<Button>(OpenExplorer);
+            AddToScanListCommand = new AsyncCommand(); 
+            AddToNoScanListCommand = new AsyncCommand();
+
         }
 
         public void UpdateConfiguration(string size)
@@ -205,7 +210,7 @@ namespace FileCleanup.ViewModels
             return Configuration.PathsNotToScan.Contains(path);
         }
         
-        public async void StartScanner()
+        public async Task ExecuteStartScanner()
         {
             token = new CancellationTokenSource();
             ScanningStatus = "Running...";
@@ -218,7 +223,7 @@ namespace FileCleanup.ViewModels
             ScanningStatus = $"Complete in {timeElapsed:c}";
         }
 
-        private void OpenExplorer(object parameter)
+        public async Task OpenExplorer(object parameter)
         {
             FileProps row = (FileProps)((Button)parameter.Source).DataContext;
 
@@ -298,7 +303,7 @@ namespace FileCleanup.ViewModels
                 FlaggedDirectories.Add(e.File);
         }
 
-        public void CancelScanner()
+        public void ExecuteCancelScanner()
         {
             token.Cancel();
         }

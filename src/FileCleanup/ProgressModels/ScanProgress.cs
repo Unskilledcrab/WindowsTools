@@ -1,6 +1,6 @@
 ﻿using FileCleanup.Models;
 
-namespace FileCleanup.Async
+namespace FileCleanup.ProgressModels
 {
     public class ScanProgress
     {
