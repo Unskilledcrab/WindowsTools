@@ -1,17 +1,15 @@
 ﻿using FileCleanup.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace FileCleanup.Commands
 {
-    public class StartScanCommand : ICommand
+    public class OpenExplorerCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
         public MainWindowViewModel VM { get; set; }
 
-        public StartScanCommand(MainWindowViewModel vm)
+        public OpenExplorerCommand(MainWindowViewModel vm)
         {
             VM = vm;
         }
@@ -23,7 +21,7 @@ namespace FileCleanup.Commands
 
         public void Execute(object parameter)
         {
-            VM.StartScanner();
+            VM.CancelScanner();
         }
     }
 }

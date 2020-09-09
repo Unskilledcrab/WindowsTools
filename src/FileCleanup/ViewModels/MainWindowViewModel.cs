@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace FileCleanup.ViewModels
 {
@@ -84,12 +85,18 @@ namespace FileCleanup.ViewModels
         #region Commands
         public StartScanCommand StartCommand { get; set; }
         public CancelScanCommand CancelCommand { get; set; }
+        public OpenExplorerCommand OpenExplorerCommand { get; set; }
+        public AddToScanListCommand AddToScanListCommand { get; set; }
+        public AddToNoScanListCommand AddToNoScanListCommand { get; set; }
         #endregion
 
         public MainWindowViewModel()
         {
             StartCommand = new StartScanCommand(this);
             CancelCommand = new CancelScanCommand(this);
+            OpenExplorerCommand = new OpenExplorerCommand(this);
+            AddToScanListCommand = new AddToScanListCommand(this);
+            AddToNoScanListCommand = new AddToNoScanListCommand(this);
         }
 
         public void UpdateConfiguration(string size)
@@ -211,9 +218,9 @@ namespace FileCleanup.ViewModels
             ScanningStatus = $"Complete in {timeElapsed:c}";
         }
 
-        private void OpenExplorer(object sender, RoutedEventArgs e)
+        private void OpenExplorer(object parameter)
         {
-            FileProps row = (FileProps)((Button)e.Source).DataContext;
+            FileProps row = (FileProps)((Button)parameter.Source).DataContext;
 
             try
             {
@@ -221,13 +228,13 @@ namespace FileCleanup.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Error");
+                //MessageBox.Show($"Error: {ex.Message}", "Error");
             }
         }
 
-        private void AddToNoScanList(object sender, RoutedEventArgs e)
+        private void AddToNoScanList(object parameter)
         {
-            var button = (Button)e.Source;
+            var button = (Button)parameter.Source;
             FileProps row = (FileProps)button.DataContext;
 
             try
@@ -239,13 +246,13 @@ namespace FileCleanup.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Error");
+                //MessageBox.Show($"Error: {ex.Message}", "Error");
             }
 
         }
-        private void AddToScanList(object sender, RoutedEventArgs e)
+        private void AddToScanList(object parameter)
         {
-            var button = (Button)e.Source;
+            var button = (Button)parameter.Source;
             string row = (string)button.DataContext;
 
             try
@@ -268,7 +275,7 @@ namespace FileCleanup.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Error");
+                //MessageBox.Show($"Error: {ex.Message}", "Error");
             }
         }
 
