@@ -1,5 +1,4 @@
-﻿using FileCleanup.Extensions;
-using FileCleanup.Helpers;
+﻿using FileCleanup.Helpers;
 using System;
 using System.IO;
 

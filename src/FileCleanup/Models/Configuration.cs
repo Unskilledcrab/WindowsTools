@@ -1,12 +1,8 @@
-﻿using FileCleanup.Helpers;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace FileCleanup.Models
 {
-
     public class Configuration
     {
         public ObservableCollection<string> PathsNotToScan { get; set; } = new ObservableCollection<string>();

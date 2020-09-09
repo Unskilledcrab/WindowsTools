@@ -1,9 +1,6 @@
 ﻿using FileCleanup.Extensions;
 using FileCleanup.Models;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace FileCleanup.Helpers
 {
@@ -11,7 +8,7 @@ namespace FileCleanup.Helpers
     {
         public static FileType GetFileTypeFromExtension(string extension)
         {
-            string[] pictureExtensions = { ".jpg", ".jpeg", ".img", ".png", ".gif" };
+            string[] pictureExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
             string[] movieExtensions = { ".mov", ".mp4" };
             string[] musicExtensions = { ".mp3" };
             string[] documentExtensions = { ".doc", ".pdf" };
