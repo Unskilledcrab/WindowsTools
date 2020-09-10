@@ -3,7 +3,7 @@ A Visual Studio .Net Core solution holding miscellaneous tools used for windows 
 
 ## Table of contents
 * [Technologies](#technologies)
-* [File Cleanup](#file-cleanup) - Find large files unused files *system cleaning*
+* [File Cleanup](#file-cleanup) - Find large unused files *system cleaning*
 	
 ## Technologies
 Project is created with:
