@@ -31,7 +31,7 @@
             </Grid.ColumnDefinitions>
 
             <Button Content="Start Scan" Command="{Binding StartCommand}" Grid.Column="0"/>
-            <Button Content="Cancel Scan" Click="CancelScanButton_Click" Grid.Column="1"/>
+            <Button Content="Cancel Scan" Command="{Binding CancelCommand}" Grid.Column="1"/>
 
             <Label Content="Minimum File Size To Flag:" Grid.Column="2" HorizontalAlignment="Right"/>
 
@@ -48,19 +48,19 @@
         </Grid>
 
 
-        <DataGrid ItemsSource="{Binding FlaggedFiles}" AutoGenerateColumns="False" Width="auto" Grid.Row="1">
+        <DataGrid x:Name="FilesGrid" ItemsSource="{Binding FlaggedFiles}" AutoGenerateColumns="False" Width="auto" Grid.Row="1">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Open" Click="OpenExplorer"/>
+                            <Button Content="Open" Command="{Binding Path=DataContext.OpenExplorerCommand, ElementName=FilesGrid}" CommandParameter="{Binding FullPath}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding IsScanableStatus}" IsEnabled="{Binding IsScanable}" Click="AddToNoScanList"/>
+                            <Button Content="{Binding IsScanableStatus}" IsEnabled="{Binding IsScanable}" Command="{Binding Path=DataContext.AddToNoScanListCommand, ElementName=FilesGrid}" CommandParameter="{Binding}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -72,19 +72,19 @@
                 <DataGridTextColumn Binding="{Binding FullPath}" Header="Path"/>
             </DataGrid.Columns>
         </DataGrid>
-        <DataGrid ItemsSource="{Binding FlaggedDirectories}" AutoGenerateColumns="False" Width="auto" Grid.Row="2">
+        <DataGrid x:Name="DirectoryGrid" ItemsSource="{Binding FlaggedDirectories}" AutoGenerateColumns="False" Width="auto" Grid.Row="2">
             <DataGrid.Columns>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Open" Click="OpenExplorer"/>
+                            <Button Content="Open" Command="{Binding Path=DataContext.OpenExplorerCommand, ElementName=DirectoryGrid}" CommandParameter="{Binding FullPath}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding IsScanableStatus}" IsEnabled="{Binding IsScanable}" Click="AddToNoScanList"/>
+                            <Button Content="{Binding IsScanableStatus}" IsEnabled="{Binding IsScanable}" Command="{Binding Path=DataContext.AddToNoScanListCommand, ElementName=DirectoryGrid}" CommandParameter="{Binding}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -99,7 +99,7 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Scan" Click="AddToScanList"/>
+                            <Button Content="Scan" Command="{Binding AddToScanListCommand}" CommandParameter="{Binding FullPath}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

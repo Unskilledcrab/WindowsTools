@@ -89,19 +89,19 @@ namespace FileCleanup.ViewModels
         #region Commands
         public RelayCommand CancelCommand { get; private set; }
         public IAsyncCommand StartCommand { get; private set; }
-        public IAsyncCommand<Button> OpenExplorerCommand { get; set; }
-        public IAsyncCommand AddToScanListCommand { get; set; }
-        public IAsyncCommand AddToNoScanListCommand { get; set; }
+        public IAsyncCommand<string> OpenExplorerCommand { get; set; }
+        public IAsyncCommand<string> AddToScanListCommand { get; set; }
+        public IAsyncCommand<FileProps> AddToNoScanListCommand { get; set; }
         #endregion
 
         public MainWindowViewModel()
         {
             CancelCommand = new RelayCommand(ExecuteCancelScanner, () => IsScanning);
             StartCommand = new AsyncCommand(ExecuteStartScanner, () => !IsScanning);
-            OpenExplorerCommand = new AsyncCommand<Button>(OpenExplorer);
-            AddToScanListCommand = new AsyncCommand(); 
-            AddToNoScanListCommand = new AsyncCommand();
-
+            OpenExplorerCommand = new AsyncCommand<string>(OpenExplorer);
+            AddToScanListCommand = new AsyncCommand<string>(AddToScanList);
+            AddToNoScanListCommand = new AsyncCommand<FileProps>(AddToNoScanList);
+            TestConfiguration();
         }
 
         public void UpdateConfiguration(string size)
@@ -217,19 +217,19 @@ namespace FileCleanup.ViewModels
             stopwatch.Start();
             var progress = new Progress<ScanProgress>();
             progress.ProgressChanged += UpdateProgress;
+
             await StartScanner(progress);
+
             stopwatch.Stop();
             var timeElapsed = stopwatch.Elapsed;
             ScanningStatus = $"Complete in {timeElapsed:c}";
         }
 
-        public async Task OpenExplorer(object parameter)
+        public async Task OpenExplorer(string fullPath)
         {
-            FileProps row = (FileProps)((Button)parameter.Source).DataContext;
-
             try
             {
-                Process.Start("explorer.exe", System.IO.Path.GetDirectoryName(row.FullPath));
+                Process.Start("explorer.exe", System.IO.Path.GetDirectoryName(fullPath));
             }
             catch (Exception ex)
             {
@@ -237,17 +237,14 @@ namespace FileCleanup.ViewModels
             }
         }
 
-        private void AddToNoScanList(object parameter)
+        private async Task AddToNoScanList(FileProps file)
         {
-            var button = (Button)parameter.Source;
-            FileProps row = (FileProps)button.DataContext;
-
             try
             {
-                if (!Configuration.PathsNotToScan.Contains(row.FullPath))
-                    Configuration.PathsNotToScan.Add(row.FullPath);
+                if (!Configuration.PathsNotToScan.Contains(file.FullPath))
+                    Configuration.PathsNotToScan.Add(file.FullPath);
 
-                row.IsScanable = false;
+                file.IsScanable = false;
             }
             catch (Exception ex)
             {
@@ -255,27 +252,22 @@ namespace FileCleanup.ViewModels
             }
 
         }
-        private void AddToScanList(object parameter)
+        private async Task AddToScanList(string fullPath)
         {
-            var button = (Button)parameter.Source;
-            string row = (string)button.DataContext;
-
             try
             {
-                if (Configuration.PathsNotToScan.Contains(row))
+                if (Configuration.PathsNotToScan.Contains(fullPath))
                 {
-                    Configuration.PathsNotToScan.Remove(row);
-                    var dir = FlaggedDirectories.Where(f => f.FullPath == row).FirstOrDefault();
+                    Configuration.PathsNotToScan.Remove(fullPath);
+                    var dir = FlaggedDirectories.Where(f => f.FullPath == fullPath).FirstOrDefault();
                     if (dir != null)
                         dir.IsScanable = true;
                     else
                     {
-                        var file = FlaggedFiles.Where(f => f.FullPath == row).FirstOrDefault();
+                        var file = FlaggedFiles.Where(f => f.FullPath == fullPath).FirstOrDefault();
                         if (file != null)
                             file.IsScanable = true;
                     }
-
-                    button.IsEnabled = false;
                 }
             }
             catch (Exception ex)
