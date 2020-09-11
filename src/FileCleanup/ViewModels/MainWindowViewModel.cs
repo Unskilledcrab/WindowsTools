@@ -1,20 +1,16 @@
 ﻿using FileCleanup.ProgressModels;
-using FileCleanup.Commands;
 using FileCleanup.Extensions;
 using FileCleanup.Helpers;
 using FileCleanup.Models;
 using GalaSoft.MvvmLight.Command;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Controls;
+using AsyncAwaitBestPractices.MVVM;
 
 namespace FileCleanup.ViewModels
 {
@@ -24,7 +20,14 @@ namespace FileCleanup.ViewModels
         public ObservableCollection<FileProps> FlaggedFiles { get; set; } = new ObservableCollection<FileProps>();
         public ObservableCollection<FileProps> FlaggedDirectories { get; set; } = new ObservableCollection<FileProps>();
 
-        public bool IsScanning { get; private set; }
+        private bool isScanning;
+        public bool IsScanning { get => isScanning; 
+            private set 
+            {
+                isScanning = value;
+                NotifyPropertyChanged(nameof(IsScanning));
+            } 
+        }
 
         private string scanningStatus = "Not Started";
         public string ScanningStatus
@@ -97,11 +100,11 @@ namespace FileCleanup.ViewModels
         public MainWindowViewModel()
         {
             CancelCommand = new RelayCommand(ExecuteCancelScanner, () => IsScanning);
-            StartCommand = new AsyncCommand(ExecuteStartScanner, () => !IsScanning);
+            StartCommand = new AsyncCommand(ExecuteStartScanner, _ => !IsScanning);
             OpenExplorerCommand = new AsyncCommand<string>(OpenExplorer);
             AddToScanListCommand = new AsyncCommand<string>(AddToScanList);
             AddToNoScanListCommand = new AsyncCommand<FileProps>(AddToNoScanList);
-            TestConfiguration();
+            //TestConfiguration();
         }
 
         public void UpdateConfiguration(string size)
@@ -132,7 +135,7 @@ namespace FileCleanup.ViewModels
             {
                 try
                 {
-                    await Task.Run(async () => { await Scan(driveInfo.Name, progress, token.Token); }, token.Token);
+                   await Scan(driveInfo.Name, progress, token.Token);
                 }
                 catch (OperationCanceledException)
                 {
@@ -151,11 +154,11 @@ namespace FileCleanup.ViewModels
             {
                 try
                 {
-                    await Task.Run(async () => { await ScanDirectory(directory, progress, token); }, token);
+                    await ScanDirectory(directory, progress, token);
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    Console.WriteLine(ex.Message);
                 }
             }
         }
@@ -177,7 +180,7 @@ namespace FileCleanup.ViewModels
                     token.ThrowIfCancellationRequested();
                 ScanFile(file, progress);
             }
-            await Task.Run(async () => { await Scan(directory, progress, token); }, token);
+            await Scan(directory, progress, token);
         }
 
         private void ScanFile(string file, IProgress<ScanProgress> progress)
@@ -212,17 +215,26 @@ namespace FileCleanup.ViewModels
         
         public async Task ExecuteStartScanner()
         {
+            IsScanning = true;
             token = new CancellationTokenSource();
             ScanningStatus = "Running...";
             stopwatch.Start();
             var progress = new Progress<ScanProgress>();
             progress.ProgressChanged += UpdateProgress;
 
-            await StartScanner(progress);
+            try
+            {
+                await Task.Run(() => StartScanner(progress));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
 
             stopwatch.Stop();
             var timeElapsed = stopwatch.Elapsed;
             ScanningStatus = $"Complete in {timeElapsed:c}";
+            IsScanning = false;
         }
 
         public async Task OpenExplorer(string fullPath)

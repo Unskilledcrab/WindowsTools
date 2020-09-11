@@ -53,14 +53,14 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Open" Command="{Binding Path=DataContext.OpenExplorerCommand, ElementName=FilesGrid}" CommandParameter="{Binding FullPath}"/>
+                            <Button Content="Open" Command="{Binding Path=DataContext.OpenExplorerCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding FullPath}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding IsScanableStatus}" IsEnabled="{Binding IsScanable}" Command="{Binding Path=DataContext.AddToNoScanListCommand, ElementName=FilesGrid}" CommandParameter="{Binding}" />
+                            <Button Content="{Binding IsScanableStatus}" IsEnabled="{Binding IsScanable}" Command="{Binding Path=DataContext.AddToNoScanListCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -77,14 +77,14 @@
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Open" Command="{Binding Path=DataContext.OpenExplorerCommand, ElementName=DirectoryGrid}" CommandParameter="{Binding FullPath}"/>
+                            <Button Content="Open" Command="{Binding Path=DataContext.OpenExplorerCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding FullPath}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding IsScanableStatus}" IsEnabled="{Binding IsScanable}" Command="{Binding Path=DataContext.AddToNoScanListCommand, ElementName=DirectoryGrid}" CommandParameter="{Binding}" />
+                            <Button Content="{Binding IsScanableStatus}" IsEnabled="{Binding IsScanable}" Command="{Binding Path=DataContext.AddToNoScanListCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
