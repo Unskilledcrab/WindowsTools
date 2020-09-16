@@ -20,6 +20,8 @@ namespace FileCleanup.Services
         #region Properties
         public ObservableCollection<FileProps> FlaggedFiles { get; private set; } = new ObservableCollection<FileProps>();
         public ObservableCollection<FileProps> FlaggedDirectories { get; private set; } = new ObservableCollection<FileProps>();
+        public bool IsRunning => stopwatch.IsRunning;
+        public TimeSpan TimeElapsed => stopwatch.Elapsed;
 
         private CancellationTokenSource token = new CancellationTokenSource();
         private Stopwatch stopwatch = new Stopwatch();
@@ -67,7 +69,7 @@ namespace FileCleanup.Services
             {
                 try
                 {
-                    await Scan(driveInfo.Name, progress, token.Token);
+                    await Scan(driveInfo.Name, progress, token.Token).ConfigureAwait(false);
                 }
                 catch (OperationCanceledException)
                 {
@@ -103,6 +105,7 @@ namespace FileCleanup.Services
         private async Task ScanDirectory(string directory, IProgress<ScanProgress> progress, CancellationToken token)
         {
             progress.Report(new ScanProgress(directory));
+            
 
             if (DoNotScan(directory))
                 return;
