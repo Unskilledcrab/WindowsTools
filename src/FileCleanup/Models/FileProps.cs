@@ -7,19 +7,16 @@ namespace FileCleanup.Models
     public class FileProps : BaseViewModel
     {
         public string Name => Path.GetFileName(FullPath);
-
-        private bool isScanable = true;
         public bool IsScanable
         {
             get { return isScanable; }
             set
             {
                 isScanable = value;
-                NotifyPropertyChanged(nameof(IsScanable));
-                NotifyPropertyChanged(nameof(IsScanableStatus));
+                OnPropertyChanged(nameof(IsScanable));
+                OnPropertyChanged(nameof(IsScanableStatus));
             }
         }
-
         public string IsScanableStatus => IsScanable ? "Don't Scan" : "Not Scanning";
         public string FullPath { get; set; }
         public FileType Type { get; set; }
@@ -58,6 +55,8 @@ namespace FileCleanup.Models
                 return $"{time.Days} days";
             }
         }
+
+        private bool isScanable = true;
 
         public FileProps(FileInfo file)
         {

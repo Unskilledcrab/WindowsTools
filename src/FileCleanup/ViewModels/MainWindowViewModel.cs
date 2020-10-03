@@ -19,23 +19,8 @@ namespace FileCleanup.ViewModels
     {
         #region View Properties
 
-        private bool isScanning;
-        public bool IsScanning
-        {
-            get => isScanning;
-            private set
-            {
-                isScanning = value;
-                NotifyPropertyChanged(nameof(IsScanning));
-            }
-        }
-
-        private string scanningStatus = "Not Started";
-        public string ScanningStatus
-        {
-            get { return scanningStatus; }
-            set { scanningStatus = value; NotifyPropertyChanged(nameof(ScanningStatus)); }
-        }
+        public bool IsScanning { get; set;}
+        public string ScanningStatus { get; set; } = "Not Started";
 
         private DateTime selectedDate = DateTime.Now.AddDays(-60);
         public DateTime SelectedDate
@@ -77,12 +62,7 @@ namespace FileCleanup.ViewModels
             }
         }
 
-        private Configuration configuration;
-        public Configuration Configuration
-        {
-            get { return configuration; }
-            set { configuration = value; NotifyPropertyChanged(nameof(Configuration)); }
-        }
+        public Configuration Configuration { get; set; }
         #endregion
 
         #region Model Properties
@@ -121,7 +101,7 @@ namespace FileCleanup.ViewModels
                 ScanSystemFolders = false,
                 ScanProgramDataFolders = false,
                 ScanProgramFolders = false,
-                FlagFileSize = 100, //* 1000 * 1000, // Megabytes: regularly in bytes
+                FlagFileSize = 100 * 1000 * 1000, // Megabytes: regularly in bytes
                 LastAccessFlagDate = SelectedDate
             };
         }
@@ -175,12 +155,12 @@ namespace FileCleanup.ViewModels
                 if (Configuration.PathsNotToScan.Contains(fullPath))
                 {
                     Configuration.PathsNotToScan.Remove(fullPath);
-                    var dir = FlaggedDirectories.Where(f => f.FullPath == fullPath).FirstOrDefault();
+                    var dir = FileScanner.FlaggedDirectories.Where(f => f.FullPath == fullPath).FirstOrDefault();
                     if (dir != null)
                         dir.IsScanable = true;
                     else
                     {
-                        var file = FlaggedFiles.Where(f => f.FullPath == fullPath).FirstOrDefault();
+                        var file = FileScanner.FlaggedFiles.Where(f => f.FullPath == fullPath).FirstOrDefault();
                         if (file != null)
                             file.IsScanable = true;
                     }
