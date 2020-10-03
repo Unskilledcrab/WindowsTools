@@ -12,10 +12,11 @@ using FileCleanup.Extensions;
 using System.Windows.Media;
 using Newtonsoft.Json;
 using System.Net.Http;
+using GalaSoft.MvvmLight;
 
 namespace FileCleanup.Services
 {
-    public class FileScanner
+    public class FileScanner : ViewModelBase
     {
         #region Properties
         public ObservableCollection<FileProps> FlaggedFiles { get; private set; } = new ObservableCollection<FileProps>();
@@ -35,7 +36,7 @@ namespace FileCleanup.Services
 
         #region Constructors
         public FileScanner(long flagFileSize, DateTime flagLastAccessDate)
-        {
+        {            
             Configuration = new Configuration
             {
                 FlagFileSize = flagFileSize,
@@ -61,6 +62,7 @@ namespace FileCleanup.Services
 
         public async Task StartScanner(IProgress<ScanProgress> progress)
         {
+            stopwatch.Restart();
             FlaggedDirectories.Clear();
             FlaggedFiles.Clear();
 
@@ -81,6 +83,7 @@ namespace FileCleanup.Services
 
                 }
             }
+            stopwatch.Stop();
             OnScanComplete(EventArgs.Empty);
         }
 
@@ -89,6 +92,8 @@ namespace FileCleanup.Services
             if (token.IsCancellationRequested)
                 token.ThrowIfCancellationRequested();
 
+            await Task.Delay(1);
+            RaisePropertyChanged(nameof(IsRunning));
             foreach (var directory in Directory.GetDirectories(path))
             {
                 try
@@ -130,7 +135,10 @@ namespace FileCleanup.Services
 
             var fileToAdd = new FileInfo(file);
             if (CanAddFile(fileToAdd))
-                progress.Report(new ScanProgress(new FileProps(fileToAdd), true));
+            {
+                FlaggedFiles.Add(new FileProps(fileToAdd));
+                 progress.Report(new ScanProgress(new FileProps(fileToAdd), true));
+            }
         }
 
         private bool CanAddDirectory(DirectoryInfo directory)

@@ -1,7 +1,7 @@
 ﻿using FileCleanup.ViewModels;
 using System.Windows;
 
-namespace FileCleanup
+namespace FileCleanup.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

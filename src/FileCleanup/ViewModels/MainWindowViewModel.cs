@@ -18,16 +18,16 @@ namespace FileCleanup.ViewModels
     public class MainWindowViewModel : BaseViewModel
     {
         #region View Properties
-        public ObservableCollection<FileProps> FlaggedFiles { get; set; } = new ObservableCollection<FileProps>();
-        public ObservableCollection<FileProps> FlaggedDirectories { get; set; } = new ObservableCollection<FileProps>();
 
         private bool isScanning;
-        public bool IsScanning { get => isScanning; 
-            private set 
+        public bool IsScanning
+        {
+            get => isScanning;
+            private set
             {
                 isScanning = value;
                 NotifyPropertyChanged(nameof(IsScanning));
-            } 
+            }
         }
 
         private string scanningStatus = "Not Started";
@@ -86,7 +86,7 @@ namespace FileCleanup.ViewModels
         #endregion
 
         #region Model Properties
-        private FileScanner fileScanner;
+        public FileScanner FileScanner { get; }
         #endregion
 
         #region Commands
@@ -99,18 +99,19 @@ namespace FileCleanup.ViewModels
 
         public MainWindowViewModel()
         {
-            CancelCommand = new RelayCommand(ExecuteCancelScanner, () => IsScanning);
-            StartCommand = new AsyncCommand(ExecuteStartScanner, _ => !IsScanning);
+            CancelCommand = new RelayCommand(ExecuteCancelScanner, () => FileScanner.IsRunning);
+            StartCommand = new AsyncCommand(ExecuteStartScanner, _ => !FileScanner.IsRunning);
             OpenExplorerCommand = new AsyncCommand<string>(OpenExplorer);
             AddToScanListCommand = new AsyncCommand<string>(AddToScanList);
             AddToNoScanListCommand = new AsyncCommand<FileProps>(AddToNoScanList);
             TestConfiguration();
-            fileScanner = new FileScanner(Configuration);
+            FileScanner = new FileScanner(Configuration);
         }
 
         public void UpdateConfiguration(string size)
         {
             Configuration.FlagFileSize = Utils.ConvertSizeToByte(Int32.Parse(size), Utils.ConvertStringToSizeType(SelectedSizeType));
+            FileScanner.UpdateConfiguration(Configuration);
         }
 
         private void TestConfiguration()
@@ -120,20 +121,18 @@ namespace FileCleanup.ViewModels
                 ScanSystemFolders = false,
                 ScanProgramDataFolders = false,
                 ScanProgramFolders = false,
-                FlagFileSize = 100 * 1000 * 1000, // Megabytes: regularly in bytes
+                FlagFileSize = 100, //* 1000 * 1000, // Megabytes: regularly in bytes
                 LastAccessFlagDate = SelectedDate
             };
-            UpdateConfiguration(Size);
         }
-        
+
         public async Task ExecuteStartScanner()
         {
-            IsScanning = true;
             var progress = new Progress<ScanProgress>();
             progress.ProgressChanged += UpdateProgress;
             try
             {
-                await Task.Run(() =>fileScanner.StartScanner(progress));
+                await FileScanner.StartScanner(progress);
             }
             catch (Exception ex)
             {
@@ -200,22 +199,16 @@ namespace FileCleanup.ViewModels
                 ScanningStatus = $"Scanning... {e.CurrentDirectory}";
                 return;
             }
-            ////var scanner = (FileScanner)sender;
-            ////if (scanner.IsRunning)
-            ////{
-            ////    var timeElapsed = scanner.TimeElapsed;
-            ////    ScanningStatus = $"Running... {timeElapsed:c}";
-            ////}
-
-            ////if (e.IsFile)
-            ////    FlaggedFiles.Add(e.File);
-            ////else
-            ////    FlaggedDirectories.Add(e.File);
+            if (FileScanner.IsRunning)
+            {
+                var timeElapsed = FileScanner.TimeElapsed;
+                ScanningStatus = $"Running... {timeElapsed:c}";
+            }
         }
 
         public void ExecuteCancelScanner()
         {
-            fileScanner.CancelScan();
+            FileScanner.CancelScan();
         }
     }
 }
