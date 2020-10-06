@@ -226,8 +226,21 @@ namespace FileCleanup.Models {
                 ".tif"
             };
             string[] movieExtensions = {
+                ".3g2",
+                ".3gp",
+                ".avi",
+                ".flv",
+                ".h264",
+                ".m4v",
+                ".mkv",
                 ".mov",
-                ".mp4"
+                ".mp4",
+                ".mpg",
+                ".mpeg",
+                ".rm",
+                ".swf",
+                ".vob",
+                ".wmv"
             };
             string[] musicExtensions = {
                 ".mp3",
@@ -243,7 +256,13 @@ namespace FileCleanup.Models {
             };
             string[] documentExtensions = {
                 ".doc",
-                ".pdf"
+                ".docx",
+                ".odt",
+                ".pdf",
+                ".rtf",
+                ".tex",
+                ".txt",
+                ".wpd"
             };
             string[] logExtensions = {
                 ".log"
