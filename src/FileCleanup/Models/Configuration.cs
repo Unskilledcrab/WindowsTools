@@ -171,27 +171,27 @@ namespace FileCleanup.Models {
                 var factor = 1024;
                 var convertedSize = ByteSize;
                 if (convertedSize < factor)
-                    return $ "{convertedSize} Bytes";
+                    return $"{convertedSize} Bytes";
                 else
                     convertedSize /= factor;
 
                 if (convertedSize < factor)
-                    return $ "{convertedSize} Kb";
+                    return $"{convertedSize} Kb";
                 else
                     convertedSize /= factor;
 
                 if (convertedSize < factor)
-                    return $ "{convertedSize} Mb";
+                    return $"{convertedSize} Mb";
                 else
                     convertedSize /= factor;
 
-                return $ "{convertedSize} Gb";
+                return $"{convertedSize} Gb";
             }
         }
         public string DaysSinceViewed {
             get {
                 var time = DateTime.Now.Subtract(LastAccessed);
-                return $ "{time.Days} days";
+                return $"{time.Days} days";
             }
         }
 
