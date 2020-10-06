@@ -167,7 +167,7 @@ namespace FileCleanup.Models
 
         public FileType GetFileTypeFromExtension(string extension)
         {
-            string[] pictureExtensions = { ".jpg", ".jpeg", ".img", ".png", ".gif" };
+            string[] pictureExtensions = { ".jpg", ".jpeg", ".img", ".png", ".gif", ".ai", ".bmp", ".ico", ".ps", ".psd", "svg", ".tiff", ".tif" };
             string[] movieExtensions = { ".mov", ".mp4" };
             string[] musicExtensions = { ".mp3" };
             string[] documentExtensions = { ".doc", ".pdf" };
