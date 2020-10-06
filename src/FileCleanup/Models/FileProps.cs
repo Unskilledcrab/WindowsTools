@@ -1,10 +1,11 @@
 ﻿using FileCleanup.Helpers;
+using GalaSoft.MvvmLight;
 using System;
 using System.IO;
 
 namespace FileCleanup.Models
 {
-    public class FileProps : BaseViewModel
+    public class FileProps : ViewModelBase
     {
         public string Name => Path.GetFileName(FullPath);
         public bool IsScanable
@@ -13,8 +14,8 @@ namespace FileCleanup.Models
             set
             {
                 isScanable = value;
-                OnPropertyChanged(nameof(IsScanable));
-                OnPropertyChanged(nameof(IsScanableStatus));
+                RaisePropertyChanged(nameof(IsScanable));
+                RaisePropertyChanged(nameof(IsScanableStatus));
             }
         }
         public string IsScanableStatus => IsScanable ? "Don't Scan" : "Not Scanning";

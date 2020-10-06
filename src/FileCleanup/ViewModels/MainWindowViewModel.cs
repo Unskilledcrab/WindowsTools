@@ -12,10 +12,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using AsyncAwaitBestPractices.MVVM;
 using FileCleanup.Services;
+using GalaSoft.MvvmLight;
 
 namespace FileCleanup.ViewModels
 {
-    public class MainWindowViewModel : BaseViewModel
+    public class MainWindowViewModel : ViewModelBase
     {
         #region View Properties
 
