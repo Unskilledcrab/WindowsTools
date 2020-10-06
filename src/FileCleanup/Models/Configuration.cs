@@ -177,6 +177,8 @@ namespace FileCleanup.Models
             string[] compressedExtensions = { ".7z", ".arj", ".deb", ".pkg", ".rar", ".rpm", ".tar.gz", ".z", ".zip" };
             string[] mediaExtensions = { ".bin", ".dmg", ".iso", ".toast", ".vcd" };
             string[] dataExtensions = { ".csv", ".dat", ".db", ".dbf", ".mdb", ".sav", ".sql", ".tar", ".xml" };
+            string[] emailExtensions = { ".email", ".eml", ".emlx", ".msg", ".oft", ".ost", ".pst", ".vcf" };
+
 
             if (extension.IsIn(pictureExtensions))
                 return FileType.picture;
