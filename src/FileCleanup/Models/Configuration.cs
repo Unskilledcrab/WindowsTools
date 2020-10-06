@@ -173,6 +173,11 @@ namespace FileCleanup.Models
             string[] documentExtensions = { ".doc", ".pdf" };
             string[] logExtensions = { ".log" };
 
+            //Newly added categories
+            string[] compressedExtensions = { ".7z", ".arj", ".deb", ".pkg", ".rar", ".rpm", ".tar.gz", ".z", ".zip" };
+            string[] mediaExtensions = { ".bin", ".dmg", ".iso", ".toast", ".vcd" };
+            string[] dataExtensions = { ".csv", ".dat", ".db", ".dbf", ".mdb", ".sav", ".sql", ".tar", ".xml" };
+
             if (extension.IsIn(pictureExtensions))
                 return FileType.picture;
             else if (extension.IsIn(movieExtensions))
