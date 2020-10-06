@@ -169,7 +169,7 @@ namespace FileCleanup.Models
         {
             string[] pictureExtensions = { ".jpg", ".jpeg", ".img", ".png", ".gif", ".ai", ".bmp", ".ico", ".ps", ".psd", "svg", ".tiff", ".tif" };
             string[] movieExtensions = { ".mov", ".mp4" };
-            string[] musicExtensions = { ".mp3" };
+            string[] musicExtensions = { ".mp3", ".aif", ".cda", ".mid", ".midi", ".mpa", ".ogg", ".wav", ".wma", ".wpl" };
             string[] documentExtensions = { ".doc", ".pdf" };
             string[] logExtensions = { ".log" };
 
