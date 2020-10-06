@@ -408,6 +408,28 @@ namespace FileCleanup.Models {
                 return FileType.document;
             else if (extension.IsIn(logExtensions))
                 return FileType.log;
+            else if (extension.IsIn(compressedExtensions))
+                return FileType.compressed;
+            else if (extension.IsIn(mediaExtensions))
+                return FileType.media;
+            else if (extension.IsIn(dataExtensions))
+                return FileType.data;
+            else if (extension.IsIn(emailExtensions))
+                return FileType.email;
+            else if (extension.IsIn(executableExtensions))
+                return FileType.executable;
+            else if (extension.IsIn(fontExtensions))
+                return FileType.font;
+            else if (extension.IsIn(internetExtensions))
+                return FileType.internet;
+            else if (extension.IsIn(presentationExtensions))
+                return FileType.presentation;
+            else if (extension.IsIn(codeExtensions))
+                return FileType.code;
+            else if (extension.IsIn(spreadsheetExtensions))
+                return FileType.spreadsheet;
+            else if (extension.IsIn(systemExtensions))
+                return FileType.system;
             else
                 return FileType.unknown;
         }
@@ -420,6 +442,17 @@ namespace FileCleanup.Models {
         movie,
         document,
         music,
-        log
+        log,
+        compressed,
+        media,
+        data,
+        email,
+        executable,
+        font,
+        internet,
+        presentation,
+        code,
+        spreadsheet,
+        system,
     }
 }
