@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="FileCleanup.Views.ScanProfileDialogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:FileCleanup.ViewModels"
+             d:DataContext="{d:DesignInstance vm:ScanProfileDialogViewModel}"
+             mc:Ignorable="d" Background="White"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition  Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Margin="10">
+            <TextBox ToolTip="Profile Name" Text="{Binding Path=ScanProfile.ProfileName, Mode=TwoWay}" FontSize="16" FontWeight="Bold"/>
+            <TextBox ToolTip="Profile Description" Text="{Binding Path=ScanProfile.Description, Mode=TwoWay}"/>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ListBox Margin="10,0,10,0" ItemsSource="{Binding Path=ScanProfile.IgnoredPaths}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=Path, Mode=OneWay}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Add"/>
+                        <MenuItem Header="Remove"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
+            <Grid Margin="10,0,10,0" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Settings" HorizontalAlignment="Center" Grid.ColumnSpan="2" FontWeight="Bold"/>
+
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Minimum Flag Size (bytes)"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Minimum Flag Access Time"/>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Scan All Drives"/>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Scan Program Folders"/>
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Scan Downloads Folder"/>
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="Scan Documents Folder"/>
+                <TextBlock Grid.Row="7" Grid.Column="0" Text="Scan Pictures Folder"/>
+                <TextBlock Grid.Row="8" Grid.Column="0" Text="Scan Videos Folder"/>
+                <TextBlock Grid.Row="9" Grid.Column="0" Text="Scan Desktop Folder"/>
+                <TextBlock Grid.Row="10" Grid.Column="0" Text="Scan Music Folder"/>
+
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="10,0,0,0" Text="{Binding Path=ScanProfile.CfgSettings.MinFileFlagSize, Mode=TwoWay}"/>
+                <DatePicker Grid.Row="2" Grid.Column="1" Margin="10,0,0,0" SelectedDate="{Binding Path=ScanProfile.CfgSettings.MinFlagAccessTime, Mode=TwoWay}"/>
+                <CheckBox Grid.Row="3" Grid.Column="1" Margin="10,0,0,0" IsChecked="{Binding Path=ScanProfile.CfgSettings.ScanAllDrives, Mode=TwoWay}"/>
+                <CheckBox Grid.Row="4" Grid.Column="1" Margin="10,0,0,0" IsChecked="{Binding Path=ScanProfile.CfgSettings.ScanProgramFolders, Mode=TwoWay}"/>
+                <CheckBox Grid.Row="5" Grid.Column="1" Margin="10,0,0,0" IsChecked="{Binding Path=ScanProfile.CfgSettings.ScanDownloadsFolder, Mode=TwoWay}"/>
+                <CheckBox Grid.Row="6" Grid.Column="1" Margin="10,0,0,0" IsChecked="{Binding Path=ScanProfile.CfgSettings.ScanDocumentFolder, Mode=TwoWay}"/>
+                <CheckBox Grid.Row="7" Grid.Column="1" Margin="10,0,0,0" IsChecked="{Binding Path=ScanProfile.CfgSettings.ScanPicturesFolder, Mode=TwoWay}"/>
+                <CheckBox Grid.Row="8" Grid.Column="1" Margin="10,0,0,0" IsChecked="{Binding Path=ScanProfile.CfgSettings.ScanVideosFolder, Mode=TwoWay}"/>
+                <CheckBox Grid.Row="9" Grid.Column="1" Margin="10,0,0,0" IsChecked="{Binding Path=ScanProfile.CfgSettings.ScanDesktopFolder, Mode=TwoWay}"/>
+                <CheckBox Grid.Row="10" Grid.Column="1" Margin="10,0,0,0" IsChecked="{Binding Path=ScanProfile.CfgSettings.ScanMusicFolder, Mode=TwoWay}"/>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button FontSize="16" Margin="10" Command="{Binding Path=CreateCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                    Content="Create" Padding="10,0,10,0" HorizontalAlignment="Center"/>
+            <Button FontSize="16" Margin="10" Grid.Column="1" IsCancel="True" Command="{Binding Path=CancelCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                    Content="Cancel" Padding="10,0,10,0" HorizontalAlignment="Center"/>
+        </Grid>
+        
+    </Grid>
+</UserControl>
