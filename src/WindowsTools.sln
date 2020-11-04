@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileCleanup", "FileCleanup\FileCleanup.csproj", "{C08CA37D-53BD-4447-A1A8-556C7B1A7083}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileCleanupDataLib", "FileCleanupDataLib\FileCleanupDataLib.csproj", "{2A267708-A757-42CD-94CC-585299676C87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{C08CA37D-53BD-4447-A1A8-556C7B1A7083}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C08CA37D-53BD-4447-A1A8-556C7B1A7083}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C08CA37D-53BD-4447-A1A8-556C7B1A7083}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A267708-A757-42CD-94CC-585299676C87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A267708-A757-42CD-94CC-585299676C87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A267708-A757-42CD-94CC-585299676C87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A267708-A757-42CD-94CC-585299676C87}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

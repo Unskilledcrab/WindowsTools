@@ -1,17 +1,15 @@
 ﻿using FileCleanup.ProgressModels;
-using FileCleanup.Extensions;
 using FileCleanup.Helpers;
 using FileCleanup.Models;
-using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AsyncAwaitBestPractices.MVVM;
 using FileCleanup.Services;
+using FileCleanupDataLib.Models;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight;
 
 namespace FileCleanup.ViewModels
@@ -26,7 +24,7 @@ namespace FileCleanup.ViewModels
         private DateTime selectedDate = DateTime.Now.AddDays(-60);
         public DateTime SelectedDate
         {
-            get { return selectedDate; }
+            get => selectedDate;
             set
             {
                 selectedDate = value;
@@ -37,7 +35,7 @@ namespace FileCleanup.ViewModels
         private string size = "1";
         public string Size
         {
-            get { return size; }
+            get => size;
             set
             {
                 try
@@ -55,7 +53,7 @@ namespace FileCleanup.ViewModels
         private string selectedSizeType = "Gb";
         public string SelectedSizeType
         {
-            get { return selectedSizeType; }
+            get => selectedSizeType;
             set
             {
                 selectedSizeType = value;
@@ -68,6 +66,8 @@ namespace FileCleanup.ViewModels
 
         #region Model Properties
         public FileScanner FileScanner { get; }
+        public ObservableCollection<CfgScanProfile> ScanProfiles { get; set; }
+        private readonly IDialogService _dialogService;
         #endregion
 
         #region Commands
@@ -76,6 +76,7 @@ namespace FileCleanup.ViewModels
         public IAsyncCommand<string> OpenExplorerCommand { get; set; }
         public IAsyncCommand<string> AddToScanListCommand { get; set; }
         public IAsyncCommand<FileProps> AddToNoScanListCommand { get; set; }
+        public RelayCommand NewScanningProfileCommand { get; }
         #endregion
 
         public MainWindowViewModel()
@@ -85,19 +86,24 @@ namespace FileCleanup.ViewModels
             OpenExplorerCommand = new AsyncCommand<string>(OpenExplorer);
             AddToScanListCommand = new AsyncCommand<string>(AddToScanList);
             AddToNoScanListCommand = new AsyncCommand<FileProps>(AddToNoScanList);
+            NewScanningProfileCommand = new RelayCommand(NewScanningProfile);
             TestConfiguration();
             FileScanner = new FileScanner(Configuration);
+            ScanProfiles = new ObservableCollection<CfgScanProfile>();
+            _dialogService = new DialogService();
         }
+
+        
 
         public void UpdateConfiguration(string size)
         {
-            Configuration.FlagFileSize = Utils.ConvertSizeToByte(Int32.Parse(size), Utils.ConvertStringToSizeType(SelectedSizeType));
+            Configuration.FlagFileSize = Utils.ConvertSizeToByte(int.Parse(size), Utils.ConvertStringToSizeType(SelectedSizeType));
             FileScanner.UpdateConfiguration(Configuration);
         }
 
         private void TestConfiguration()
         {
-            Configuration = new Configuration()
+            Configuration = new Configuration
             {
                 ScanSystemFolders = false,
                 ScanProgramDataFolders = false,
@@ -156,12 +162,12 @@ namespace FileCleanup.ViewModels
                 if (Configuration.PathsNotToScan.Contains(fullPath))
                 {
                     Configuration.PathsNotToScan.Remove(fullPath);
-                    var dir = FileScanner.FlaggedDirectories.Where(f => f.FullPath == fullPath).FirstOrDefault();
+                    var dir = FileScanner.FlaggedDirectories.FirstOrDefault(f => f.FullPath == fullPath);
                     if (dir != null)
                         dir.IsScanable = true;
                     else
                     {
-                        var file = FileScanner.FlaggedFiles.Where(f => f.FullPath == fullPath).FirstOrDefault();
+                        var file = FileScanner.FlaggedFiles.FirstOrDefault(f => f.FullPath == fullPath);
                         if (file != null)
                             file.IsScanable = true;
                     }
@@ -190,6 +196,14 @@ namespace FileCleanup.ViewModels
         public void ExecuteCancelScanner()
         {
             FileScanner.CancelScan();
+        }
+
+        private void NewScanningProfile()
+        {
+            var viewModel = new ScanProfileDialogViewModel("Add new Scanning Profile", string.Empty);
+            var newScanProfile = _dialogService.OpenDialog(viewModel);
+            if (newScanProfile != null)
+                ScanProfiles.Add(newScanProfile);
         }
     }
 }
