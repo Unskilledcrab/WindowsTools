@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:FileCleanup"
+        xmlns:vm="clr-namespace:FileCleanup.ViewModels"
+        d:DataContext="{d:DesignInstance vm:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="File Scanner" Height="470" Width="968">
     <Grid>
@@ -28,6 +29,7 @@
                 <ColumnDefinition Width="60"/>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="105"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <Button Content="Start Scan" Command="{Binding StartCommand}" Grid.Column="0"/>
@@ -45,6 +47,10 @@
 
             <Label  Content="Flag if older than this date:" Grid.Column="5" HorizontalAlignment="Right"/>
             <DatePicker SelectedDate="{Binding SelectedDate}" Grid.Column="6"/>
+
+            <Button Content="New Scanning Profile"
+                    Grid.Column="7" 
+                    Command="{Binding Path=NewScanningProfileCommand}"/>
         </Grid>
 
 
