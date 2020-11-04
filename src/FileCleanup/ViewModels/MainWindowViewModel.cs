@@ -102,7 +102,7 @@ namespace FileCleanup.ViewModels
                 ScanSystemFolders = false,
                 ScanProgramDataFolders = false,
                 ScanProgramFolders = false,
-                FlagFileSize = 100 * 1000 * 1000, // Megabytes: regularly in bytes
+                FlagFileSize = 100, //* 1000 * 1000, // Megabytes: regularly in bytes
                 LastAccessFlagDate = SelectedDate
             };
         }

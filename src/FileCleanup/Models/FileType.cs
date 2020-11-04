@@ -8,6 +8,17 @@
         movie,
         document,
         music,
-        log
+        log,
+        compressed,
+        media,
+        data,
+        email,
+        executable,
+        font,
+        internet,
+        presentation,
+        code,
+        spreadsheet,
+        system,
     }
 }
