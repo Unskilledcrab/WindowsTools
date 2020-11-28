@@ -36,7 +36,7 @@ namespace FileCleanup.Services
 
         #region Constructors
         public FileScanner(long flagFileSize, DateTime flagLastAccessDate)
-        {            
+        {
             Configuration = new Configuration
             {
                 FlagFileSize = flagFileSize,
@@ -80,7 +80,6 @@ namespace FileCleanup.Services
                 }
                 catch (Exception ex)
                 {
-
                 }
             }
             stopwatch.Stop();
@@ -110,7 +109,6 @@ namespace FileCleanup.Services
         private async Task ScanDirectory(string directory, IProgress<ScanProgress> progress, CancellationToken token)
         {
             progress.Report(new ScanProgress(directory));
-            
 
             if (DoNotScan(directory))
                 return;
@@ -145,7 +143,7 @@ namespace FileCleanup.Services
         {
             var accessTimeCheck = Configuration.IsOverFlagAccessDate(directory.LastAccessTime);
 
-            return (accessTimeCheck);
+            return accessTimeCheck;
         }
 
         private bool CanAddFile(FileInfo fileInfo)
@@ -153,7 +151,7 @@ namespace FileCleanup.Services
             var lengthCheck = Configuration.IsOverFlagSize(fileInfo.Length);
             var accessTimeCheck = Configuration.IsOverFlagAccessDate(fileInfo.LastAccessTime);
 
-            return (lengthCheck && accessTimeCheck);
+            return lengthCheck && accessTimeCheck;
         }
 
         private bool DoNotScan(string path)

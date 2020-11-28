@@ -93,8 +93,6 @@ namespace FileCleanup.ViewModels
             _dialogService = new DialogService();
         }
 
-        
-
         public void UpdateConfiguration(string size)
         {
             Configuration.FlagFileSize = Utils.ConvertSizeToByte(int.Parse(size), Utils.ConvertStringToSizeType(SelectedSizeType));
@@ -153,7 +151,6 @@ namespace FileCleanup.ViewModels
             {
                 //MessageBox.Show($"Error: {ex.Message}", "Error");
             }
-
         }
         private async Task AddToScanList(string fullPath)
         {
