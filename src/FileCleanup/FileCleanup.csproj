@@ -15,8 +15,4 @@
     <PackageReference Include="PropertyChanged.Fody" Version="3.2.9" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\FileCleanupDataLib\FileCleanupDataLib.csproj" />
-  </ItemGroup>
-
 </Project>
