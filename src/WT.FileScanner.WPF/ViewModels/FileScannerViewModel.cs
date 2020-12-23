@@ -57,7 +57,7 @@ namespace WT.FileScanner.WPF.ViewModels
         {
             ClearScan();
             scannerStopwatch.Restart();
-            return Task.CompletedTask();
+            return Task.CompletedTask;
         }
     }
 }

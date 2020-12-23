@@ -40,7 +40,7 @@ namespace WT.FileScanner.Shared.Extensions
 
         public static FileSizeType ToFileSizeType(this string fileSizeType)
         {
-            Enum.TryParse(sizeType, out FileSizeType result);
+            Enum.TryParse(fileSizeType, out FileSizeType result);
             return result;
         }
     }
