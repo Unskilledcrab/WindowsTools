@@ -14,7 +14,7 @@ namespace WT.FileScanner.UI.Shared
         /// Configures all of the view models for dependency injection in this list
         /// </summary>
         /// <param name="services"></param>
-        public static IServiceCollection AddViewModels(this IServiceCollection services)
+        private static IServiceCollection AddViewModels(this IServiceCollection services)
         {
             return services;
         }

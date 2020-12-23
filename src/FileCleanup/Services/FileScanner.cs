@@ -1,40 +1,40 @@
-﻿using FileCleanup.Models;
+﻿using FileCleanup.Extensions;
+using FileCleanup.Models;
 using FileCleanup.ProgressModels;
+using GalaSoft.MvvmLight;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using FileCleanup.Extensions;
-using System.Windows.Media;
-using Newtonsoft.Json;
-using System.Net.Http;
-using GalaSoft.MvvmLight;
 
 namespace FileCleanup.Services
 {
     public class FileScanner : ViewModelBase
     {
         #region Properties
+
+        private Stopwatch stopwatch = new Stopwatch();
+        private CancellationTokenSource token = new CancellationTokenSource();
+        private Configuration Configuration;
         public ObservableCollection<FileProps> FlaggedFiles { get; private set; } = new ObservableCollection<FileProps>();
         public ObservableCollection<FileProps> FlaggedDirectories { get; private set; } = new ObservableCollection<FileProps>();
         public bool IsRunning => stopwatch.IsRunning;
         public TimeSpan TimeElapsed => stopwatch.Elapsed;
 
-        private CancellationTokenSource token = new CancellationTokenSource();
-        private Stopwatch stopwatch = new Stopwatch();
-        private Configuration Configuration;
-        #endregion
+        #endregion Properties
 
         public event EventHandler ScanComplete;
+
         public event EventHandler<FileProps> DirectoryAdded;
+
         public event EventHandler<FileProps> FileAdded;
+
         public event EventHandler<TimeSpan> ScannerCancelled;
 
         #region Constructors
+
         public FileScanner(long flagFileSize, DateTime flagLastAccessDate)
         {
             Configuration = new Configuration
@@ -48,7 +48,8 @@ namespace FileCleanup.Services
         {
             Configuration = configuration;
         }
-        #endregion
+
+        #endregion Constructors
 
         public void UpdateConfiguration(Configuration configuration)
         {
@@ -135,7 +136,7 @@ namespace FileCleanup.Services
             if (CanAddFile(fileToAdd))
             {
                 FlaggedFiles.Add(new FileProps(fileToAdd));
-                 progress.Report(new ScanProgress(new FileProps(fileToAdd), true));
+                progress.Report(new ScanProgress(new FileProps(fileToAdd), true));
             }
         }
 
@@ -160,6 +161,7 @@ namespace FileCleanup.Services
         }
 
         #region Events
+
         protected virtual void OnScanComplete(EventArgs e)
         {
             ScanComplete?.Invoke(this, e);
@@ -179,6 +181,7 @@ namespace FileCleanup.Services
         {
             ScannerCancelled?.Invoke(this, cancelTime);
         }
-        #endregion
+
+        #endregion Events
     }
 }

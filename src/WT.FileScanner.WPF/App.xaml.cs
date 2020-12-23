@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
 namespace WT.FileScanner.WPF
@@ -13,5 +8,11 @@ namespace WT.FileScanner.WPF
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            Container.Create();
+            var mainWindow = Container.ServiceProvider.GetRequiredService<MainWindow>();
+            mainWindow.Show();
+        }
     }
 }

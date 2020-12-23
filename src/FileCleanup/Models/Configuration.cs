@@ -11,7 +11,9 @@ namespace FileCleanup.Models
         public UserScanConfiguration PublicUserSettings { get; set; }
         public bool ScanProgramFolders { get; set; }
         public bool ScanProgramDataFolders { get; set; }
-        public long FlagFileSize { get; set; }
-        public DateTime LastAccessFlagDate { get; set; }
+        public long FlagFileSizeMin { get; set; }
+        public long FlagFileSizeMax { get; set; }
+        public DateTime FlagLastAccessDateMin { get; set; }
+        public DateTime FlagLastAccessDateMax { get; set; }
     }
 }
