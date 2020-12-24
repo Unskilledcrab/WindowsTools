@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using WT.FileScanner.UI.Shared.Services.Interfaces;
+using WT.FileScanner.UI.Shared.ViewModels;
 
 namespace WT.FileScanner.UI.Shared
 {
@@ -21,11 +22,11 @@ namespace WT.FileScanner.UI.Shared
         }
 
         /// <summary>
-        /// Used to add specific UI framework implementations before <see cref="Build"/> to add
-        /// services for the shared interfaces.
+        /// Used to add specific UI framework implementations to the IoC container for the shared
+        /// interface / abstract class.
         /// </summary>
         /// <remarks>Must use before <see cref="Build"/> or will not be included in IoC Container</remarks>
-        /// <typeparam name="TService">shared interface of the service</typeparam>
+        /// <typeparam name="TService">shared interface / abstract class of the service</typeparam>
         /// <typeparam name="TImplementation">implementation of the service</typeparam>
         /// <param name="lifetime">The lifetime of the service</param>
         public static void AddService<TService, TImplementation>(LifetimeType lifetime)
@@ -52,22 +53,28 @@ namespace WT.FileScanner.UI.Shared
             }
         }
 
-        public static void AddService<TService>(LifetimeType lifetime)
-            where TService : class
+        /// <summary>
+        /// Used to add specific UI framework implementations to the IoC container
+        /// </summary>
+        /// <remarks>Must use before <see cref="Build"/> or will not be included in IoC Container</remarks>
+        /// <typeparam name="TImplementation">implementation of the service</typeparam>
+        /// <param name="lifetime">The lifetime of the service</param>
+        public static void AddService<TImplementation>(LifetimeType lifetime)
+            where TImplementation : class
         {
             if (serviceCollection == null) Create();
             switch (lifetime)
             {
                 case LifetimeType.Singleton:
-                    serviceCollection.AddSingleton<TService>();
+                    serviceCollection.AddSingleton<TImplementation>();
                     break;
 
                 case LifetimeType.Scoped:
-                    serviceCollection.AddScoped<TService>();
+                    serviceCollection.AddScoped<TImplementation>();
                     break;
 
                 case LifetimeType.Transient:
-                    serviceCollection.AddTransient<TService>();
+                    serviceCollection.AddTransient<TImplementation>();
                     break;
 
                 default:
@@ -94,6 +101,7 @@ namespace WT.FileScanner.UI.Shared
         /// <param name="services"></param>
         private static IServiceCollection AddViewModels(this IServiceCollection services)
         {
+            services.AddTransient<FileScannerViewModel>();
             return services;
         }
     }

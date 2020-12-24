@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -13,6 +13,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="18.4.0.31" />
+    <PackageReference Include="Syncfusion.Shared.WPF" Version="18.4.0.31" />
+    <PackageReference Include="Syncfusion.Themes.Office2010Blue.WPF" Version="18.4.0.31" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="18.4.0.31" />
   </ItemGroup>
 
 </Project>
