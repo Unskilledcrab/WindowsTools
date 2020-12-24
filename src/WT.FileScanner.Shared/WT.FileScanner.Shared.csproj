@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Project to have shared code between both server and client side</Description>
   </PropertyGroup>
 
 </Project>

@@ -1,5 +1,4 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+﻿using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,11 +6,11 @@ using System.Windows.Input;
 
 namespace WT.FileScanner.UI.Shared.ViewModels
 {
-    public abstract class BaseViewModel : ObservableObject, IDisposable
+    public abstract class BaseUpdateViewModel : BaseViewModel, IDisposable
     {
         private CancellationTokenSource updateTokenSource = new CancellationTokenSource();
 
-        public BaseViewModel()
+        public BaseUpdateViewModel()
         {
             UpdateCommand = new AsyncRelayCommand(Update);
             CancelUpdateCommand = new RelayCommand(CancelUpdate);
@@ -21,7 +20,6 @@ namespace WT.FileScanner.UI.Shared.ViewModels
 
         public event EventHandler AfterUpdate;
 
-        public string Title { get; set; } = "No Title";
         public ICommand CancelUpdateCommand { get; set; }
         public ICommand UpdateCommand { get; set; }
         public bool IsBusy { get; set; } = false;

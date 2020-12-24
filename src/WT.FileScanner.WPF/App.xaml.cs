@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System.Windows;
+﻿using System.Windows;
+using WT.FileScanner.UI.Shared;
 
 namespace WT.FileScanner.WPF
 {
@@ -10,8 +10,10 @@ namespace WT.FileScanner.WPF
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            Container.Create();
-            var mainWindow = Container.ServiceProvider.GetRequiredService<MainWindow>();
+            IoC.Create();
+            Configure.ConfigureServices();
+            IoC.Build();
+            var mainWindow = IoC.Get<MainWindow>();
             mainWindow.Show();
         }
     }

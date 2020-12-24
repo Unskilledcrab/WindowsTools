@@ -5,14 +5,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using WT.FileScanner.Shared.Models;
-using WT.FileScanner.UI.Shared.ViewModels;
 
-namespace WT.FileScanner.WPF.ViewModels
+namespace WT.FileScanner.UI.Shared.ViewModels
 {
-    public class FileScannerViewModel : BaseViewModel
+    public class FileScannerViewModel : BaseUpdateViewModel
     {
         private Stopwatch scannerStopwatch = new Stopwatch();
         private CancellationTokenSource scannerToken = new CancellationTokenSource();
@@ -37,17 +35,17 @@ namespace WT.FileScanner.WPF.ViewModels
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Error");
+                ShowAlert($"Error: {ex.Message}");
             }
         }
 
         public override Task OnUpdate(CancellationToken token)
         {
-            //This is where we will gather the users scanning profile from their local settings
+            //This is where we will gather the users scanning profile from the local database made by EF Core
             throw new NotImplementedException();
         }
 
-        protected void ClearScan()
+        protected void ClearPreviousScan()
         {
             ScannedDirectories.Clear();
             ScannedFiles.Clear();
@@ -55,7 +53,7 @@ namespace WT.FileScanner.WPF.ViewModels
 
         protected Task StartScan()
         {
-            ClearScan();
+            ClearPreviousScan();
             scannerStopwatch.Restart();
             return Task.CompletedTask;
         }

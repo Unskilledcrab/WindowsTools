@@ -1,5 +1,5 @@
 ﻿using System.Windows.Controls;
-using WT.FileScanner.WPF.ViewModels;
+using WT.FileScanner.UI.Shared.ViewModels;
 
 namespace WT.FileScanner.WPF.UserControls
 {
